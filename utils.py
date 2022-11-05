@@ -29,7 +29,7 @@ def checkAvailability(parkingData, row, column):
 
 
 # get occupancy percentage
-def getOccupancyPercentage(parkingData):
+def statistics(parkingData):
     total = 0  # initialize total to 0 , to count total slots
     occupied = 0  # initialize occupied to 0 , to count occupied slots
     for i in parkingData:  # iterate through parking data
@@ -70,36 +70,40 @@ def getNearestAvailableSlot(headers, parkingData):
 
 # method to reserve the parking slot
 def reserve(filename, headers, parkingData):
-    # get nearest available slots
-    row, column = getNearestAvailableSlot(headers, parkingData)
-    # if row or column is -1 - denotes the no slots available nearby
-    if row == -1 or column == -1:
-        print("No nearest slots available")
-    else:
-        # if slots available ask user to continue with available slots
-        print('Nearest available slots from building entrance are row:%d, column :%s' % (
-            row, column))
-        choice = input(
-            '\n Do you want to continue with nearest available slot?(y/n)')
-        choice = choice.upper()
-        if choice == 'Y':  # if yes , reserve the available slots otherwise read slot position from usre
-            parkingData[row][column] = 'X'
-            updateFile(filename, headers, parkingData)
-            return
+    try:
+        # get nearest available slots
+        row, column = getNearestAvailableSlot(headers, parkingData)
+        # if row or column is -1 - denotes the no slots available nearby
+        if row == -1 or column == -1:
+            print("No nearest slots available")
+        else:
+            # if slots available ask user to continue with available slots
+            print('Nearest available slots from building entrance are row:%d, column :%s' % (
+                row, column))
+            choice = input(
+                '\n Do you want to continue with nearest available slot?(y/n)')
+            choice = choice.upper()
+            if choice == 'Y':  # if yes , reserve the available slots otherwise read slot position from usre
+                parkingData[row][column] = 'X'
+                updateFile(filename, headers, parkingData)
+                return
 
-    row = int(input("\nEnter row number : "))  # read manual row from user
-    column = input("\nEnter column letter : ")  # read manual column from usre
-    # check availability of entered row, column slot
-    flag = checkAvailability(parkingData, row, column)
-    if flag == 1:  # if available ,reserve
-        parkingData[row][column] = 'X'
-        updateFile(filename, headers, parkingData)  # update file
-    elif flag == 0:
-        # if row , column is reserved show message to user
-        print("Entered row and column postion is not available")
-    elif flag == -1:
-        print(
-            "Entered row and column postion is out of range")  # if entered row column is out of bounds show error message to user
+        row = int(input("\nEnter row number : "))  # read manual row from user
+        # read manual column from usre
+        column = input("\nEnter column letter : ")
+        # check availability of entered row, column slot
+        flag = checkAvailability(parkingData, row, column)
+        if flag == 1:  # if available ,reserve
+            parkingData[row][column] = 'X'
+            updateFile(filename, headers, parkingData)  # update file
+        elif flag == 0:
+            # if row , column is reserved show message to user
+            print("Entered row and column postion is not available")
+        elif flag == -1:
+            print(
+                "Entered row and column postion is out of range")  # if entered row column is out of bounds show error message to user
+    except Exception as e:
+        print(e)
 
 # read parking information from specified file in dictionary and return dictionary
 
