@@ -86,6 +86,7 @@ def reserve(filename, headers, parkingData):
             if choice == 'Y':  # if yes , reserve the available slots otherwise read slot position from usre
                 parkingData[row][column] = 'X'
                 updateFile(filename, headers, parkingData)
+                print(f'Your selection {row}{column} is reserved!')
                 return
 
         row = int(input("\nEnter row number : "))  # read manual row from user
@@ -96,6 +97,7 @@ def reserve(filename, headers, parkingData):
         if flag == 1:  # if available ,reserve
             parkingData[row][column] = 'X'
             updateFile(filename, headers, parkingData)  # update file
+            print(f'Your selection {row}{column} is reserved!')
         elif flag == 0:
             # if row , column is reserved show message to user
             print("Entered row and column postion is not available")
@@ -125,7 +127,7 @@ def readParkingData(filename):
 
 
 # display status of current
-def displayStatus(filename):
+def display(filename):
     # read parking information from file
     headers, parkingData = readParkingData(filename)
     # join headers
@@ -133,7 +135,6 @@ def displayStatus(filename):
     # format the display to show parking stuatus in readable format with keeping 4 precision for first column with empty path
     displayString = '{0: <4}'.format(
         ' ') + ' '.join(displayString[i:i + 4] for i in range(0, len(displayString), 4))
-    print(headers)
     # print each row data
     for r in parkingData:
         displayString += "\n" + '{0: <4}'.format(str(r))

@@ -1,4 +1,4 @@
-from utils import displayStatus, readParkingData, statistics, reserve
+from utils import display, readParkingData, statistics, reserve
 
 # Main execution
 # create menu
@@ -15,7 +15,7 @@ while (True):
     choice = input(menu)
     choice = choice.upper()
     if choice == 'D':
-        displayStatus(filename)
+        display(filename)
     elif choice == 'R':
         reserve(filename, headers, parkingData)
     elif choice == 'S':
